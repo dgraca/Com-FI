@@ -12,7 +12,7 @@ let Footer = () => {
       MerakiUI offers Tailwind CSS components with an MIT license
       *adjusted to fit our needs
     */
-      <footer className="bg-whitebottom-0">
+      <footer className="bg-gray-800 bottom-0">
         <div className="container px-2 py-4 mx-auto">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-800">Stack usada</h2>
