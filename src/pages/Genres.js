@@ -2,11 +2,14 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GenresTable from "../components/GenresTable";
+import Popup from "../components/Popup";
 
 // Genres component
 class Genres extends React.Component {
   state = {
-    genres: []
+    genres: [],
+    fetchErr: false,
+    fetchMsg: "",
   }
 
   componentDidMount() {
@@ -20,21 +23,36 @@ class Genres extends React.Component {
       })
       .catch(err => {
         console.log(`Could not request musics from API. Error ${err}`);
+        this.setState({ fetchErr: true, fetchMsg: "Erro ao carregar dados da API" });
+        return [];
       });
 
     this.setState({ genres: data });
   }
 
   render() {    
-    const { genres } = this.state;
+    const { genres, fetchErr, fetchMsg } = this.state;
 
-    return (
-      <>
-        <Navbar />
-        <GenresTable genresDataIN={genres} />
-        <Footer />
-      </>
-    );
+    if (fetchErr) {
+      return (
+        <>
+          <Navbar />
+          <div>
+            <GenresTable genresDataIN={genres} />
+            <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
+          </div>
+          <Footer />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Navbar />
+          <GenresTable genresDataIN={genres} />
+          <Footer />
+        </>
+      );
+    }
   }
 }
 

@@ -13,7 +13,23 @@ function THead() {
 }
 
 const TBody = (props) => {
-  const rows = props.dataIN.map(genre => {
+  let rows = props.dataIN;
+  if (rows.length === 0) {
+    return (
+      <tbody>
+        <tr>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
+            <div>
+              <p className="text-gray-900 whitespace-no-wrap">
+                Sem dados a apresentar
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    );
+  }
+  rows = rows.map(genre => {
     return (
       <tr key={genre.id}>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
@@ -26,6 +42,7 @@ const TBody = (props) => {
       </tr>
     );
   });
+
 
   return <tbody>{rows}</tbody>;
 };

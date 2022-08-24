@@ -16,7 +16,23 @@ function THead() {
 }
 
 const TBody = (props) => {
-  const rows = props.dataIN.map(music => {
+  let rows = props.dataIN;
+  if (rows.length === 0) {
+    return (
+      <tbody>
+        <tr>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="2">
+            <div>
+              <p className="text-gray-900 whitespace-no-wrap">
+                Sem dados a apresentar
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    );
+  }
+  rows = rows.map(music => {
     return (
       <tr key={music.id}>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">

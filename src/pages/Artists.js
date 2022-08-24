@@ -2,12 +2,15 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ArtistsTable from "../components/ArtistsTable";
+import Popup from "../components/Popup";
 
 // Artists component
 class Artists extends React.Component {
 
   state = {
-    artists: []
+    artists: [],
+    fetchErr: false,
+    fetchMsg: "",
   }
 
   componentDidMount() {
@@ -21,21 +24,36 @@ class Artists extends React.Component {
       })
       .catch(err => {
         console.log(`Could not request musics from API. Error ${err}`);
+        this.setState({ fetchErr: true, fetchMsg: "Erro ao carregar dados da API" });
+        return [];
       });
 
     this.setState({ artists: data });
   }
 
   render() {    
-    const { artists } = this.state;
+    const { artists, fetchErr, fetchMsg } = this.state;
 
-    return (
-      <>
-        <Navbar />
-        <ArtistsTable artistsDataIN={artists} />
-        <Footer />
-      </>
-    );
+    if (fetchErr) {
+      return (
+        <>
+          <Navbar />
+          <div>
+            <ArtistsTable artistsDataIN={artists} />
+            <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
+          </div>
+          <Footer />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Navbar />
+          <ArtistsTable artistsDataIN={artists} />
+          <Footer />
+        </>
+      );
+    }
   }
 }
 
