@@ -87,6 +87,7 @@ class MusicsCreate extends React.Component {
       this.setState({ fetchErr: true, fetchMsg: "Título inválido" });
       return;
     }
+
     if (music.releaseYear === "") {
       this.setState({ fetchErr: true, fetchMsg: "Ano de lançamento inválido" });
       return;
@@ -124,7 +125,7 @@ class MusicsCreate extends React.Component {
   }
 
   render() {
-    const { music, genres, fetchErr, fetchMsg, redirect } = this.state;
+    const { music, genres, fetchErr, fetchMsg } = this.state;
 
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment

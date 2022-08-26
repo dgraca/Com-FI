@@ -5,6 +5,7 @@ import AlbumsIndex from "./pages/albums/Index";
 import MusicsIndex from "./pages/musics/Index";
 import MusicsCreate from "./pages/musics/Create";
 import ArtistsIndex from "./pages/artists/Index";
+import ArtistsCreate from "./pages/artists/Create";
 import GenresIndex from "./pages/genres/Index";
 
 // App's main react component
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route path="/musics/create" element={<MusicsCreate />} />
           {/* artists */}
           <Route path="/artists" element={<ArtistsIndex />} />
+          <Route path="/artists/create" element={<ArtistsCreate />} />
           {/* genres */}
           <Route path="/genres" element={<GenresIndex />} />
         </Routes>
