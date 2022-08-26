@@ -1,6 +1,6 @@
 import React from "react";
 
-let Popup = (props) => {
+const Popup = (props) => {
   let { type, msg } = props;
 
   /*

@@ -12,7 +12,7 @@ const parseData = (date) => {
     return finalDate + ' ' + finalTime;
 }
 
-function THead() {
+const THead = () => {
   return (
     <thead>
       <tr>

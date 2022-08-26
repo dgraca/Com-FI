@@ -1,0 +1,201 @@
+import React from "react";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import Popup from "../../components/Popup";
+import GenresSelect from "../../components/GenresSelect";
+
+class MusicsCreate extends React.Component {
+  state = {
+    music: {
+        "title": "",
+        "releaseYear": new Date().getFullYear(),
+        "genre": 0,
+    },
+    genres: [],
+    fetchErr: false,
+    fetchMsg: "",
+  }
+
+  componentDidMount() {
+    this.getGenres();
+  }
+
+  // request the list of genres from API
+  // and sets that list to the state's genres array
+  async getGenres() {
+    let data = await fetch("/api/genresAPI/")
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
+      .catch(err => {
+        console.log(`Could not request genres from API. Error ${err}`);
+        this.setState({ fetchErr: true, fetchMsg: "Erro ao carregar dados da API" });
+        return [];
+      });
+
+    this.setState({ genres: data });
+  }
+
+  /**
+   * updates state.music, keeping all it's information and just changing one value
+   * @param {*} type represents the object value to change
+   * @param {*} value value to replace previous value
+   */
+  handleMusic = (type, value) => {
+    switch (type) {
+      case "title":
+        this.setState(previousState => ({
+          music: {
+            ...previousState.music,
+            title: value,
+          }
+        }));
+        break;
+      case "releaseYear":
+        this.setState(previousState => ({
+          music: {
+            ...previousState.music,
+            releaseYear: value,
+          }
+        }));
+        break;
+      case "genre":
+        this.setState(previousState => ({
+          music: {
+            ...previousState.music,
+            genre: value,
+          }
+        }));
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  createMusic = async (event) => {
+    // cancels the event (if it's cancellable) without stopping its propagation
+    // this means that the request will be done, but the event will be stopped
+    event.preventDefault();
+
+    const music = this.state.music;
+
+    if (music.title.trim() === "") {
+      this.setState({ fetchErr: true, fetchMsg: "Título inválido" });
+      return;
+    }
+    if (music.releaseYear === "") {
+      this.setState({ fetchErr: true, fetchMsg: "Ano de lançamento inválido" });
+      return;
+    }
+    
+    if (music.genreFK == 0) {
+      this.setState({ fetchErr: true, fetchMsg: "Género inválido" });
+      return;
+    }
+
+    // creates an object of key/value pairs to be sent to an API
+    let formData = new FormData();
+    formData.append("title", music.title);
+    formData.append("releaseYear", music.releaseYear);
+    formData.append("genreFK", music.genre);
+
+    // sends music to API through post request
+    await fetch("/api/musicsAPI/", {
+      method: "post",
+      body: formData,
+    })
+      .then(res => {
+        if (res.ok) {
+          console.log(res);
+          return;
+        }
+        // throws an exception with the text response
+        throw res.text();
+      })
+      .catch(async err => {
+        // this.setState({ fetchErr: true, fetchMsg: "Erro ao criar música" });
+        // waits until the promise fulfilled and attributes it response into state
+        this.setState({ fetchErr: true, fetchMsg: await err });
+      });
+  }
+
+  render() {
+    const { music, genres, fetchErr, fetchMsg, redirect } = this.state;
+
+    // because react JSX only returns one element, we surrounded the code with <> and </>
+    // this is the shortest syntax of a React.Fragment
+    if (fetchErr) {
+      return (
+        <>
+          <Navbar />
+          <div className="flex flex-col justify-between gap-6">
+            <div>
+              <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
+                <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar nova música</h2>
+                <form onSubmit={this.createMusic}>
+                  <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                    <div>
+                      <label className="text-gray-700">Título</label>
+                      <input type="text" value={music.title} onChange={e => this.handleMusic("title", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                    </div>
+                    <div>
+                      <label className="text-gray-700">Ano de lançamento</label>
+                      <input type="number" value={music.releaseYear} onChange={e => this.handleMusic("releaseYear", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                    </div>
+                    <div>
+                      <label className="text-gray-700">Género musical</label>
+                      <GenresSelect className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" genresIN={genres} genreOUT={e => this.handleMusic("genre", e.target.value)} />
+                    </div>
+                  </div>
+                  <div className="flex justify-end mt-6">
+                    <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
+                  </div>
+                </form>
+              </section>
+            </div>
+            <Popup type="error" msg={fetchMsg} />
+          </div>
+          <Footer />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Navbar />
+          <div>
+            <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
+              <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar nova música</h2>
+              <form onSubmit={this.createMusic}>
+                <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                  <div>
+                    <label className="text-gray-700">Título</label>
+                    <input type="text" value={music.title} onChange={e => this.handleMusic("title", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                  </div>
+                  <div>
+                    <label className="text-gray-700">Ano de lançamento</label>
+                    <input type="number" value={music.releaseYear} onChange={e => this.handleMusic("releaseYear", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                  </div>
+                  <div>
+                    <label className="text-gray-700">Género musical</label>
+                    <GenresSelect className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" genresIN={genres} genreOUT={e => this.handleMusic("genre", e.target.value)} />
+                  </div>
+                </div>
+                <div className="flex justify-end mt-6">
+                  <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
+                </div>
+              </form>
+            </section>
+          </div>
+          <Footer />
+        </>
+      );
+    }
+  }
+
+}
+
+export default MusicsCreate;

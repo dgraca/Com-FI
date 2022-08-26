@@ -1,22 +1,22 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import AlbumsTable from "../components/AlbumsTable";
-import Popup from "../components/Popup";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import MusicsTable from "../../components/MusicsTable";
+import Popup from "../../components/Popup";
 
-class Musics extends React.Component {
+class MusicsIndex extends React.Component {
   state = {
-    albums: [],
+    musics: [],
     fetchErr: false,
     fetchMsg: "",
   }
 
   componentDidMount() {
-    this.getAlbums();
+    this.getMusics();
   }
 
-  async getAlbums() {
-    let data = await fetch("api/albumsAPI/")
+  async getMusics() {
+    let data = await fetch("api/musicsAPI/")
       .then(res => {
         return res.json();
       })
@@ -26,11 +26,11 @@ class Musics extends React.Component {
         return [];
       });
 
-    this.setState({ albums: data });
+    this.setState({ musics: data });
   }
 
   render() {
-    const { albums, fetchErr, fetchMsg } = this.state;
+    const { musics, fetchErr, fetchMsg } = this.state;
 
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
@@ -39,7 +39,7 @@ class Musics extends React.Component {
         <>
           <Navbar />
           <div>
-            <AlbumsTable albumsDataIN={albums} />
+            <MusicsTable musicsDataIN={musics} />
             <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -49,7 +49,7 @@ class Musics extends React.Component {
       return (
         <>
           <Navbar />
-          <AlbumsTable albumsDataIN={albums} />
+          <MusicsTable musicsDataIN={musics} />
           <Footer />
         </>
       );
@@ -58,4 +58,4 @@ class Musics extends React.Component {
 
 }
 
-export default Musics;
+export default MusicsIndex;

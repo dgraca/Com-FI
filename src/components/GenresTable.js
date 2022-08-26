@@ -1,6 +1,6 @@
 import React from "react";
 
-function THead() {
+const THead = () => {
   return (
     <thead>
       <tr>

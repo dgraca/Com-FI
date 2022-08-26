@@ -1,45 +1,44 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ArtistsTable from "../components/ArtistsTable";
-import Popup from "../components/Popup";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import GenresTable from "../../components/GenresTable";
+import Popup from "../../components/Popup";
 
-// Artists component
-class Artists extends React.Component {
-
+// Genres component
+class Genres extends React.Component {
   state = {
-    artists: [],
+    genres: [],
     fetchErr: false,
     fetchMsg: "",
   }
 
   componentDidMount() {
-    this.getArtists();
+    this.getGenres();
   }
 
-  async getArtists() {
-    let data = await fetch("api/artistsAPI/")
+  async getGenres() {
+    let data = await fetch("api/genresAPI/")
       .then(res => {
         return res.json();
       })
       .catch(err => {
-        console.log(`Could not request musics from API. Error ${err}`);
+        console.log(`Could not request genres from API. Error ${err}`);
         this.setState({ fetchErr: true, fetchMsg: "Erro ao carregar dados da API" });
         return [];
       });
 
-    this.setState({ artists: data });
+    this.setState({ genres: data });
   }
 
   render() {    
-    const { artists, fetchErr, fetchMsg } = this.state;
+    const { genres, fetchErr, fetchMsg } = this.state;
 
     if (fetchErr) {
       return (
         <>
           <Navbar />
           <div>
-            <ArtistsTable artistsDataIN={artists} />
+            <GenresTable genresDataIN={genres} />
             <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -49,7 +48,7 @@ class Artists extends React.Component {
       return (
         <>
           <Navbar />
-          <ArtistsTable artistsDataIN={artists} />
+          <GenresTable genresDataIN={genres} />
           <Footer />
         </>
       );
@@ -57,4 +56,4 @@ class Artists extends React.Component {
   }
 }
 
-export default Artists;
+export default Genres;

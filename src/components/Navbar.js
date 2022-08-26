@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // 1. the simplier way: just a function returning elements (render and all other stuff automatically applied)
 // 2. With the ES6 classes. This way allows to override componentDidMount, among other methods
 // in this specific case, we only care about returning a simple navbar, so we chose the 1. way
-let Navbar = () => {
+const Navbar = () => {
   return (
     <nav className="flex flex-row items-center justify-between flex-wrap bg-gray-800 p-8 text-gray-100">
       <Link to="/" className="font-bold tracking-wider text-2xl">Com-FI</Link>
