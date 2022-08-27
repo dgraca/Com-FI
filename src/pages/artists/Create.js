@@ -113,28 +113,28 @@ class ArtistsCreate extends React.Component {
           <Navbar />
           <div className="flex flex-col justify-between gap-6">
             <div>
-                <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
+              <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
                 <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar novo artista</h2>
                 <form onSubmit={this.createArtist}>
-                    <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
-                        <label className="text-gray-700">Nome</label>
-                        <input type="text" value={artist.name} onChange={e => this.handleArtist("name", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
-                    </div>
-                    <div>
-                        <label className="text-gray-700">Email</label>
-                        <input type="email" value={artist.email} onChange={e => this.handleArtist("email", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                      <label className="text-gray-700">Nome</label>
+                      <input type="text" value={artist.name} onChange={e => this.handleArtist("name", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
                     </div>
                     <div>
-                        <label className="text-gray-700">Palavra-chave</label>
-                        <input type="password" value={artist.password} onChange={e => this.handleArtist("password", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
+                      <label className="text-gray-700">Email</label>
+                      <input type="email" value={artist.email} onChange={e => this.handleArtist("email", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
                     </div>
+                    <div>
+                      <label className="text-gray-700">Palavra-chave</label>
+                      <input type="password" value={artist.password} onChange={e => this.handleArtist("password", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
                     </div>
-                    <div className="flex justify-end mt-6">
+                  </div>
+                  <div className="flex justify-end mt-6">
                     <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
-                    </div>
+                  </div>
                 </form>
-                </section>
+              </section>
             </div>
             <Popup type="error" msg={fetchMsg} />
           </div>
