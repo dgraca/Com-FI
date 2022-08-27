@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import AlbumsIndex from "./pages/albums/Index";
+import AlbumsCreate from "./pages/albums/Create";
 import MusicsIndex from "./pages/musics/Index";
 import MusicsCreate from "./pages/musics/Create";
 import ArtistsIndex from "./pages/artists/Index";
@@ -18,6 +19,7 @@ class App extends React.Component {
           <Route path="/" element={<Home />} />
           {/* albums */}
           <Route path="/albums" element={<AlbumsIndex />} />
+          <Route path="/albums/create" element={<AlbumsCreate />} />
           {/* musics */}
           <Route path="/musics" element={<MusicsIndex />} />
           <Route path="/musics/create" element={<MusicsCreate />} />

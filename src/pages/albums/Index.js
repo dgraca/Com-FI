@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import AlbumsTable from "../../components/AlbumsTable";
 import Popup from "../../components/Popup";
 
-class Musics extends React.Component {
+class AlbumsIndex extends React.Component {
   state = {
     albums: [],
     fetchErr: false,
@@ -58,4 +58,4 @@ class Musics extends React.Component {
 
 }
 
-export default Musics;
+export default AlbumsIndex;
