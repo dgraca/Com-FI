@@ -11,6 +11,9 @@ class AlbumsIndex extends React.Component {
     fetchMsg: "",
   }
 
+  // binds "this" into the deleteAlbum function
+  deleteAlbum = this.deleteAlbum.bind(this);
+
   componentDidMount() {
     this.getAlbums();
   }
@@ -29,6 +32,23 @@ class AlbumsIndex extends React.Component {
     this.setState({ albums: data });
   }
 
+  async deleteAlbum(id) {
+    let formData = new FormData();
+    formData.append("id", id);
+    await fetch(`api/albumsApi/${id}`, {
+      method: "delete", 
+      body: formData,     
+    }).then(async res => {
+      if(res.ok) {
+        await this.getAlbums();
+        return;
+      };
+      throw res.text();
+    }).catch(async err => {
+      this.setState({ fetchErr: true, fetchMsg: await err });
+    });
+  }
+
   render() {
     const { albums, fetchErr, fetchMsg } = this.state;
 
@@ -39,7 +59,7 @@ class AlbumsIndex extends React.Component {
         <>
           <Navbar />
           <div>
-            <AlbumsTable albumsDataIN={albums} />
+            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
             <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -49,7 +69,7 @@ class AlbumsIndex extends React.Component {
       return (
         <>
           <Navbar />
-          <AlbumsTable albumsDataIN={albums} />
+          <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
           <Footer />
         </>
       );

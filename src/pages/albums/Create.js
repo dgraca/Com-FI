@@ -153,7 +153,7 @@ class AlbumsCreate extends React.Component {
           <div className="flex flex-col justify-between gap-6">
             <div>
               <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-                <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar nova música</h2>
+                <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar novo album</h2>
                 <form onSubmit={this.createAlbum}>
                   <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
@@ -163,18 +163,17 @@ class AlbumsCreate extends React.Component {
                     <div>
                       <label className="text-gray-700">Ano de lançamento</label>
                       <input type="number" value={album.releaseYear} onChange={e => this.handleAlbum("releaseYear", e.target.value)} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" />
-                    </div>
-                    <div>
+                    </div>                                     
+                  </div>
+                  <div className="w-full mt-4">
                       <label className="text-gray-700">Musicas</label>
-                      {/* meter um select para as musicas */}
                       <MusicsCheckBox musics={musics} albumMusics={e => this.handleAlbum("albumMusics", e.target.value)} />
-                      {/* <GenresSelect className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md" genresIN={genres} genreOUT={e => this.handleMusic("genre", e.target.value)} /> */}
-                    </div>                    
                   </div>
                   <div className="flex justify-end mt-6">
                     <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
                   </div>
                 </form>
+                
               </section>
             </div>
             <Popup type="error" msg={fetchMsg} />
