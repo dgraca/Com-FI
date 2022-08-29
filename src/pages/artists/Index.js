@@ -13,6 +13,9 @@ class Artists extends React.Component {
     fetchMsg: "",
   }
 
+  // binds "this" into the deleteArtist function
+  deleteArtist = this.deleteArtist.bind(this);
+
   componentDidMount() {
     this.getArtists();
   }
@@ -29,6 +32,23 @@ class Artists extends React.Component {
       });
 
     this.setState({ artists: data });
+  }
+
+  async deleteArtist(id) {
+    let formData = new FormData();
+    formData.append("id", id);
+    await fetch(`api/artistsAPI/${id}`, {
+      method: "delete", 
+      body: formData,     
+    }).then(async res => {
+      if(res.ok) {
+        await this.getArtists();
+        return;
+      };
+      throw res.text();
+    }).catch(async err => {
+      this.setState({ fetchErr: true, fetchMsg: await err });
+    });
   }
 
   render() {    
@@ -49,7 +69,7 @@ class Artists extends React.Component {
       return (
         <>
           <Navbar />
-          <ArtistsTable artistsDataIN={artists} />
+          <ArtistsTable artistsDataIN={artists} deleteArtist={this.deleteArtist} />
           <Footer />
         </>
       );
