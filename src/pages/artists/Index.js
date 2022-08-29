@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ArtistsTable from "../../components/ArtistsTable";
 import Popup from "../../components/Popup";
+import Swal from "sweetalert2";
 
 // Artists component
 class Artists extends React.Component {
@@ -34,20 +35,39 @@ class Artists extends React.Component {
     this.setState({ artists: data });
   }
 
-  async deleteArtist(id) {
-    let formData = new FormData();
-    formData.append("id", id);
-    await fetch(`api/artistsAPI/${id}`, {
-      method: "delete", 
-      body: formData,     
+  deleteArtist(id) {
+    // artist about to be deleted
+    const artist = this.state.artists.find(artist => artist.id == id);
+
+    // sweetalert2 to alert user that he is about to delete an artist
+    Swal.fire({
+      icon: 'warning',
+      title: 'Tem a certeza que pretende eliminar este artista?',
+      text: `${artist.name} - ${artist.email}`,
+      footer: "ATENÇÃO: Esta ação é irreversível",
+      showCancelButton: true,
+      cancelButtonColor: "#9ca3af", // gray-400 from tailwindcss
+      confirmButtonColor: "#ef4444", // red-500 from tailwindcss
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
     }).then(async res => {
-      if(res.ok) {
-        await this.getArtists();
-        return;
-      };
-      throw res.text();
-    }).catch(async err => {
-      this.setState({ fetchErr: true, fetchMsg: await err });
+      // user confirmed action
+      if (res.isConfirmed) {
+        let formData = new FormData();
+        formData.append("id", id);
+        await fetch(`api/artistsAPI/${id}`, {
+          method: "delete", 
+          body: formData,     
+        }).then(async res => {
+          if(res.ok) {
+            await this.getArtists();
+            return;
+          };
+          throw res.text();
+        }).catch(async err => {
+          this.setState({ fetchErr: true, fetchMsg: await err });
+        });
+      }
     });
   }
 

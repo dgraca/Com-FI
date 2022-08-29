@@ -19,6 +19,7 @@ const Footer = () => {
             <p><a href="https://reactrouter.com/" target="_blank" className="max-w-md mx-auto mt-2 text-gray-400 hover:text-gray-200">React router</a></p>
             <p><a href="https://tailwindcss.com/" target="_blank" className="max-w-md mx-auto mt-2 text-gray-400 hover:text-gray-200">TailwindCSS</a></p>
             <p><a href="https://merakiui.com/" target="_blank" className="max-w-md mx-auto mt-2 text-gray-400 hover:text-gray-200">MerakiUI</a></p>
+            <p><a href="https://sweetalert2.github.io/" target="_blank" className="max-w-md mx-auto mt-2 text-gray-400 hover:text-gray-200">Sweetalert2</a></p>
           </div>
         </div>
       </footer>
