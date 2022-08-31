@@ -15,26 +15,37 @@ const withParams = (Component) => {
   return props => <Component {...props} params={useParams()} />;
 }
 
+/**
+ * Component that represents one Album details page.
+ * That means, this components list all the information of one album
+ */
 class AlbumsDetails extends React.Component {
 
+  // component's initial state
   state = {
     album: {
         "title": "",
         "releaseYear": new Date().getFullYear(),
         "albumMusics": [],
     },
+    loading: true,
     fetchErr: false,
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     const id = this.props.params.id;       
     await this.getAlbum(id);
   }  
 
   // request the respective album from API
-  // and sets that list to the state's musics array
+  // and sets it to component's state
   async getAlbum(id) {
+    // the request itself
+    // if the request was successful, executes the .then() callback
+    // if it wasn't, executes the .catch() callback
     let data = await fetch(`/api/albumsAPI/${id}`)
       .then(res => {
         if (res.ok) {
@@ -48,12 +59,17 @@ class AlbumsDetails extends React.Component {
         return [];
       });
 
-    this.setState({ album: data });
+    this.setState({ album: data, loading: false });
   }
   
+  //method to render the component
   render() {
-    const { album, fetchErr, fetchMsg } = this.state;
+    // deconstructs this.state into multiple constant variables
+    const { album, loading, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {
@@ -76,7 +92,7 @@ class AlbumsDetails extends React.Component {
                   </div>
                   <div className="w-full mt-4">
                       <label className="text-gray-700">Musicas</label>
-                      <AlbumMusicDetails musicsDataIN={album.albumMusics} />                      
+                      <AlbumMusicDetails musicsDataIN={album.albumMusics} loading={loading} />                      
                   </div>                  
                 </div>
                 
@@ -107,7 +123,7 @@ class AlbumsDetails extends React.Component {
                   </div>
                   <div className="w-full mt-4">
                     <h2 className="text-gray-700 font-bold tracking-wide text-xl">Musicas</h2>
-                    <AlbumMusicDetails musicsDataIN={album.albumMusics} />
+                    <AlbumMusicDetails musicsDataIN={album.albumMusics} loading={loading} />
                   </div>                  
                 </div>                
               </section>
