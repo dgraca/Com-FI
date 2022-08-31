@@ -4,6 +4,18 @@ import Footer from "../../components/Footer";
 import AlbumsTable from "../../components/AlbumsTable";
 import Popup from "../../components/Popup";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
+
+// this is a work-around to use react hooks in ES6 classes
+// Hooks cannot be used inside ES6 classes, and we need them
+// because of the react-router-dom way of passing props
+// this function returns a component with all it's props plus the params (props)
+// passed by the react-router-dom components (Link, Router, etc)
+// for more info: https://reactjs.org/docs/higher-order-components.html
+const withHooks = (Component) => {
+  return props => <Component {...props} location={useLocation()} />;
+}
+
 
 class AlbumsIndex extends React.Component {
   state = {
@@ -15,8 +27,8 @@ class AlbumsIndex extends React.Component {
   // binds "this" into the deleteAlbum function
   deleteAlbum = this.deleteAlbum.bind(this);
 
-  componentDidMount() {
-    this.getAlbums();
+  async componentDidMount() {
+    await this.getAlbums();
   }
 
   async getAlbums() {
@@ -71,6 +83,7 @@ class AlbumsIndex extends React.Component {
 
   render() {
     const { albums, fetchErr, fetchMsg } = this.state;
+    const navigateState = this.props.location.state;
 
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
@@ -80,7 +93,20 @@ class AlbumsIndex extends React.Component {
           <Navbar />
           <div>
             <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
-            <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
+            <Popup type="error" msg={fetchMsg} />
+          </div>
+          <Footer />
+        </>
+      );
+    } if(navigateState != null && navigateState.success) {
+      return (
+        <>
+          <Navbar />
+          <div>
+            <div className="mt-8">
+              <Popup type="success" msg={navigateState.msg} />
+            </div>
+            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
           </div>
           <Footer />
         </>
@@ -98,4 +124,4 @@ class AlbumsIndex extends React.Component {
 
 }
 
-export default AlbumsIndex;
+export default withHooks(AlbumsIndex);

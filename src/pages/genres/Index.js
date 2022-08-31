@@ -12,8 +12,8 @@ class Genres extends React.Component {
     fetchMsg: "",
   }
 
-  componentDidMount() {
-    this.getGenres();
+  async componentDidMount() {
+    await this.getGenres();
   }
 
   async getGenres() {
