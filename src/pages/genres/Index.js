@@ -8,6 +8,7 @@ import Popup from "../../components/Popup";
 class Genres extends React.Component {
   state = {
     genres: [],
+    loading: true,
     fetchErr: false,
     fetchMsg: "",
   }
@@ -27,18 +28,18 @@ class Genres extends React.Component {
         return [];
       });
 
-    this.setState({ genres: data });
+    this.setState({ genres: data, loading: false });
   }
 
   render() {    
-    const { genres, fetchErr, fetchMsg } = this.state;
+    const { genres, loading, fetchErr, fetchMsg } = this.state;
 
     if (fetchErr) {
       return (
         <>
           <Navbar />
           <div>
-            <GenresTable genresDataIN={genres} />
+            <GenresTable genresDataIN={genres} loading={loading}/>
             <Popup className="absolute bottom-0" type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -48,7 +49,7 @@ class Genres extends React.Component {
       return (
         <>
           <Navbar />
-          <GenresTable genresDataIN={genres} />
+          <GenresTable genresDataIN={genres} loading={loading}/>
           <Footer />
         </>
       );

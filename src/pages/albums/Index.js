@@ -20,6 +20,7 @@ const withHooks = (Component) => {
 class AlbumsIndex extends React.Component {
   state = {
     albums: [],
+    loading: true,
     fetchErr: false,
     fetchMsg: "",
   }
@@ -42,7 +43,7 @@ class AlbumsIndex extends React.Component {
         return [];
       });
 
-    this.setState({ albums: data });
+    this.setState({ albums: data, loading: false });
   }
 
   deleteAlbum(id) {
@@ -82,7 +83,7 @@ class AlbumsIndex extends React.Component {
   }
 
   render() {
-    const { albums, fetchErr, fetchMsg } = this.state;
+    const { albums, loading, fetchErr, fetchMsg } = this.state;
     const navigateState = this.props.location.state;
 
     // because react JSX only returns one element, we surrounded the code with <> and </>
@@ -92,7 +93,7 @@ class AlbumsIndex extends React.Component {
         <>
           <Navbar />
           <div>
-            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
+            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} loading={loading}/>
             <Popup type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -106,7 +107,7 @@ class AlbumsIndex extends React.Component {
             <div className="mt-8">
               <Popup type="success" msg={navigateState.msg} />
             </div>
-            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
+            <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} loading={loading}/>
           </div>
           <Footer />
         </>
@@ -115,7 +116,7 @@ class AlbumsIndex extends React.Component {
       return (
         <>
           <Navbar />
-          <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} />
+          <AlbumsTable albumsDataIN={albums} deleteAlbum={this.deleteAlbum} loading={loading}/>
           <Footer />
         </>
       );

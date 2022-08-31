@@ -18,9 +18,9 @@ const withHooks = (Component) => {
 
 // Artists component
 class Artists extends React.Component {
-
   state = {
     artists: [],
+    loading: true,
     fetchErr: false,
     fetchMsg: "",
   }
@@ -43,7 +43,7 @@ class Artists extends React.Component {
         return [];
       });
 
-    this.setState({ artists: data });
+    this.setState({ artists: data, loading: false });
   }
 
   deleteArtist(id) {
@@ -83,7 +83,7 @@ class Artists extends React.Component {
   }
 
   render() {    
-    const { artists, fetchErr, fetchMsg } = this.state;
+    const { artists, loading, fetchErr, fetchMsg } = this.state;
     const navigateState = this.props.location.state;
 
     if (fetchErr) {
@@ -91,7 +91,7 @@ class Artists extends React.Component {
         <>
           <Navbar />
           <div>
-            <ArtistsTable artistsDataIN={artists} />
+            <ArtistsTable artistsDataIN={artists} loading={loading}/>
             <Popup type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -105,7 +105,7 @@ class Artists extends React.Component {
             <div className="mt-8">
               <Popup type="success" msg={navigateState.msg} />
             </div>
-            <ArtistsTable artistsDataIN={artists} />
+            <ArtistsTable artistsDataIN={artists} loading={loading}/>
           </div>
           <Footer />
         </>
@@ -114,7 +114,7 @@ class Artists extends React.Component {
       return (
         <>
           <Navbar />
-          <ArtistsTable artistsDataIN={artists} deleteArtist={this.deleteArtist} />
+          <ArtistsTable artistsDataIN={artists} deleteArtist={this.deleteArtist} loading={loading}/>
           <Footer />
         </>
       );

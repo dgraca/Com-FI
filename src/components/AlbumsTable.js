@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const THead = () => {
   return (
@@ -22,7 +23,21 @@ const THead = () => {
 
 const TBody = (props) => {
   let rows = props.dataIN;
+  const loading = props.loading;
   const deleteAlbum = props.deleteAlbum;  
+  if (loading) {
+    return(
+      <tbody>
+        <tr>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="6">
+            <div className="flex items-center justify-center">
+              <Spinner/>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    )
+  }
   if (rows.length === 0) {
     return (
       <tbody>
@@ -93,7 +108,7 @@ const TBody = (props) => {
 
 class AlbumsTable extends React.Component {
   render() {
-    const { albumsDataIN, deleteAlbum } = this.props;
+    const { albumsDataIN, deleteAlbum, loading } = this.props;
 
     return (
       // code of component : https://tailwindcomponents.com/components/tables
@@ -110,7 +125,7 @@ class AlbumsTable extends React.Component {
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
               <table className="min-w-full leading-normal">
                 <THead />
-                <TBody dataIN={albumsDataIN} deleteAlbum={deleteAlbum} />
+                <TBody dataIN={albumsDataIN} deleteAlbum={deleteAlbum} loading={loading}/>
               </table>
             </div>
           </div>

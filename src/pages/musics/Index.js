@@ -18,6 +18,7 @@ const withHooks = (Component) => {
 class MusicsIndex extends React.Component {
   state = {
     musics: [],
+    loading: true,
     fetchErr: false,
     fetchMsg: "",
   }
@@ -37,11 +38,11 @@ class MusicsIndex extends React.Component {
         return [];
       });
 
-    this.setState({ musics: data });
+    this.setState({ musics: data, loading: false });
   }
 
   render() {
-    const { musics, fetchErr, fetchMsg } = this.state;
+    const { musics, loading, fetchErr, fetchMsg } = this.state;
     const navigateState = this.props.location.state;
 
     // because react JSX only returns one element, we surrounded the code with <> and </>
@@ -51,7 +52,7 @@ class MusicsIndex extends React.Component {
         <>
           <Navbar />
           <div>
-            <MusicsTable musicsDataIN={musics} />
+            <MusicsTable musicsDataIN={musics} loading={loading}/>
             <Popup type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -63,7 +64,7 @@ class MusicsIndex extends React.Component {
           <Navbar />
           <div>
             <div className="mt-8">
-              <Popup type="success" msg={navigateState.msg} />
+              <Popup type="success" msg={navigateState.msg} loading={loading}/>
             </div>
             <MusicsTable musicsDataIN={musics} />
           </div>
@@ -74,7 +75,7 @@ class MusicsIndex extends React.Component {
       return (
         <>
           <Navbar />
-          <MusicsTable musicsDataIN={musics} />
+          <MusicsTable musicsDataIN={musics} loading={loading}/>
           <Footer />
         </>
       );

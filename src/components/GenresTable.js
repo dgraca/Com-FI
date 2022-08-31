@@ -15,12 +15,30 @@ const THead = () => {
 
 const TBody = (props) => {
   let rows = props.dataIN;
+  const loading = props.loading;
+  if (loading) {
+    return(
+      <tbody>
+        <tr>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="6">
+            <div className="flex items-center justify-center">
+              <Spinner/>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    )
+  }
   if (rows.length === 0) {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" align="center">
-            <Spinner/>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="6">
+            <div>
+              <p className="text-gray-900 whitespace-no-wrap">
+                Sem dados a apresentar
+              </p>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -46,7 +64,7 @@ const TBody = (props) => {
 
 class GenresTable extends React.Component {
   render() {
-    const { genresDataIN } = this.props;
+    const { genresDataIN, loading } = this.props;
 
     return (
       // code of component : https://tailwindcomponents.com/components/tables
@@ -60,7 +78,7 @@ class GenresTable extends React.Component {
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
               <table className="min-w-full leading-normal">
                 <THead />
-                <TBody dataIN={genresDataIN}/>
+                <TBody dataIN={genresDataIN} loading={loading}/>
               </table>
             </div>
           </div>

@@ -35,7 +35,21 @@ const THead = () => {
 
 const TBody = (props) => {
   let rows = props.dataIN;
+  const loading = props.loading;
   const deleteArtist = props.deleteArtist;
+  if (loading) {
+    return(
+      <tbody>
+        <tr>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="6">
+            <div className="flex items-center justify-center">
+              <Spinner/>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    )
+  }
   if (rows.length === 0) {
     return (
       <tbody>
@@ -97,7 +111,7 @@ const TBody = (props) => {
 
 class ArtistsTable extends React.Component {
   render() {
-    const { artistsDataIN, deleteArtist } = this.props;
+    const { artistsDataIN, deleteArtist, loading } = this.props;
 
     return (
       // code of component : https://tailwindcomponents.com/components/tables
@@ -120,7 +134,7 @@ class ArtistsTable extends React.Component {
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
               <table className="min-w-full leading-normal">
                 <THead />
-                <TBody dataIN={artistsDataIN} deleteArtist={deleteArtist} />
+                <TBody dataIN={artistsDataIN} deleteArtist={deleteArtist} loading={loading}/>
               </table>
             </div>
           </div>
