@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const THead = () => {
   return (
@@ -14,7 +14,7 @@ const THead = () => {
         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Total de músicas
         </th>
-        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
+        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100" colSpan="2"></th>
       </tr>
     </thead>
   );
@@ -22,12 +22,12 @@ const THead = () => {
 
 const TBody = (props) => {
   let rows = props.dataIN;
-  const deleteAlbum = props.deleteAlbum;
+  const deleteAlbum = props.deleteAlbum;  
   if (rows.length === 0) {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="4">
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="5">
             <div>
               <p className="text-gray-900 whitespace-no-wrap">
                 Sem dados a apresentar
@@ -39,8 +39,11 @@ const TBody = (props) => {
     );
   }
   
+  
+
   rows = rows.map(album => {
     return (
+      
       <tr key={album.id}>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
           <div>
@@ -65,12 +68,18 @@ const TBody = (props) => {
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
           <div>
+            <Link to={{ pathname: `/albums/${album.id}/details`, id: album.id }} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-blue-300 hover:bg-blue-400 px-4 py-2">Detalhes</Link>
+          </div>
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
+          <div>
             <button onClick={e => deleteAlbum(e.target.value)} value={album.id} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-red-300 hover:bg-red-400 px-6 py-2">
               Eliminar
             </button>
           </div>
-        </td>
+        </td>        
       </tr>
+      
     );
   });
 
