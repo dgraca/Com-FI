@@ -3,6 +3,17 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Popup from "../../components/Popup";
 import GenresSelect from "../../components/GenresSelect";
+import { useNavigate } from "react-router-dom";
+
+// this is a work-around to use react hooks in ES6 classes
+// Hooks cannot be used inside ES6 classes, and we need them
+// because of the react-router-dom way of passing props
+// this function returns a component with all it's props plus the params (props)
+// passed by the react-router-dom components (Link, Router, etc)
+// for more info: https://reactjs.org/docs/higher-order-components.html
+const withHooks = (Component) => {
+  return props => <Component {...props} navigate={useNavigate()} />;
+}
 
 class MusicsCreate extends React.Component {
   state = {
@@ -16,8 +27,8 @@ class MusicsCreate extends React.Component {
     fetchMsg: "",
   }
 
-  componentDidMount() {
-    this.getGenres();
+  async componentDidMount() {
+    await this.getGenres();
   }
 
   // request the list of genres from API
@@ -104,6 +115,10 @@ class MusicsCreate extends React.Component {
     formData.append("releaseYear", music.releaseYear);
     formData.append("genreFK", music.genre);
 
+    // if the request was successful, this flag will be holding value "true"
+    // this means the browser will redirect to another page
+    let redirect = false;
+
     // sends music to API through post request
     await fetch("/api/musicsAPI/", {
       method: "post",
@@ -111,7 +126,7 @@ class MusicsCreate extends React.Component {
     })
       .then(res => {
         if (res.ok) {
-          console.log(res);
+          redirect = true;
           return;
         }
         // throws an exception with the text response
@@ -122,6 +137,10 @@ class MusicsCreate extends React.Component {
         // waits until the promise fulfilled and attributes it response into state
         this.setState({ fetchErr: true, fetchMsg: await err });
       });
+
+    if (redirect) {
+      this.props.navigate("/musics", {state: {success: true, msg: "Música criada com sucesso"}});
+    }
   }
 
   render() {
@@ -199,4 +218,4 @@ class MusicsCreate extends React.Component {
 
 }
 
-export default MusicsCreate;
+export default withHooks(MusicsCreate);

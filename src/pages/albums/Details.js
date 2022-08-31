@@ -38,7 +38,6 @@ class AlbumsDetails extends React.Component {
     let data = await fetch(`/api/albumsAPI/${id}`)
       .then(res => {
         if (res.ok) {
-          console.log(res);
           return res.json();
         }
         throw res;

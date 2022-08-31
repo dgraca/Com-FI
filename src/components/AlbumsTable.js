@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Spinner from "../components/Spinner";
 
 const THead = () => {
   return (
@@ -15,7 +14,7 @@ const THead = () => {
         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Total de músicas
         </th>
-        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100" colSpan="2"></th>
+        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100" colSpan="3"></th>
       </tr>
     </thead>
   );
@@ -28,8 +27,12 @@ const TBody = (props) => {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" align="center" colSpan="5">
-            <Spinner/>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="6">
+            <div>
+              <p className="text-gray-900 whitespace-no-wrap">
+                Sem dados a apresentar
+              </p>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -65,7 +68,12 @@ const TBody = (props) => {
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
           <div>
-            <Link to={{ pathname: `/albums/${album.id}/details`, id: album.id }} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-blue-300 hover:bg-blue-400 px-4 py-2">Detalhes</Link>
+          <Link to={{ pathname: `/albums/${album.id}/details`, id: album.id }} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-blue-300 hover:bg-blue-400 px-4 py-2">Detalhes</Link>
+          </div>
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
+          <div>
+            <Link to={{ pathname: `/albums/${album.id}/edit`, id: album.id }} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-yellow-300 hover:bg-yellow-400 px-4 py-2">Editar</Link>
           </div>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">

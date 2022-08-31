@@ -27,7 +27,7 @@ const THead = () => {
         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
           Data de inscrição
         </th>
-        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
+        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100" colSpan="2"></th>
       </tr>
     </thead>
   );
@@ -40,8 +40,12 @@ const TBody = (props) => {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="4" align="center">
-            <Spinner/>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="5">
+            <div>
+              <p className="text-gray-900 whitespace-no-wrap">
+                Sem dados a apresentar
+              </p>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -71,7 +75,12 @@ const TBody = (props) => {
                 {parseData(artist.registrationDate)}
               </p>
             </div>
-        </td>            
+        </td>
+        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
+          <div>
+            <Link to={{ pathname: `/artists/${artist.id}/edit`, id: artist.id }} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-yellow-300 hover:bg-yellow-400 px-4 py-2">Editar</Link>
+          </div>
+        </td>       
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
             <div>
               <button onClick={e => deleteArtist(e.target.value)} value={artist.id} className="text-gray-900 whitespace-no-wrap tracking-wider font-bold rounded-md bg-red-300 hover:bg-red-400 px-6 py-2">

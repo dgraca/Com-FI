@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Popup from "../../components/Popup";
 import MusicsCheckBox from "../../components/MusicsCheckBox";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 // this is a work-around to use react hooks in ES6 classes
 // Hooks cannot be used inside ES6 classes, and we need them
@@ -12,15 +12,15 @@ import { useNavigate } from "react-router-dom";
 // passed by the react-router-dom components (Link, Router, etc)
 // for more info: https://reactjs.org/docs/higher-order-components.html
 const withHooks = (Component) => {
-  return props => <Component {...props} navigate={useNavigate()} />;
+  return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
 }
 
-class AlbumsCreate extends React.Component {
+class AlbumsEdit extends React.Component {
   state = {
     album: {
-        "title": "",
-        "releaseYear": new Date().getFullYear(),
-        "albumMusics": [],     
+      "title": "",
+      "releaseYear": new Date().getFullYear(),
+      "albumMusics": [],     
     },
     musics: [],
     fetchErr: false,
@@ -28,7 +28,40 @@ class AlbumsCreate extends React.Component {
   }
 
   async componentDidMount() {
+    // gets id passed as param via <Link>
+    const id = this.props.params.id;
+    // fecthes album information (by id)
+    await this.getAlbum(id);
+    // gets all musics
     await this.getMusics();
+    // "checks" (as in "selects") the musics that belongs to the album in form
+    this.state.album.albumMusics.forEach(music => {
+      this.checkMusics(music);
+    });
+  }
+
+  // get album information by id
+  getAlbum = async (id) => {
+    let data = await fetch(`/api/albumsAPI/${id}`)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw res;
+      })
+      .catch(err => {
+        console.log(`Could not request musics from API. Error ${err}`);
+        this.setState({ fetchErr: true, fetchMsg: "Erro ao carregar dados da API" });
+        return [];
+      });
+    
+    // redefines the album.albumMusics to be just the music's id (in string)
+    // this could (AND SHOULD) be done on the server side
+    data.albumMusics = data.albumMusics.map(music => {
+      return music.id + "";
+    });
+
+    this.setState({ album: data });
   }
 
   // request the list of musics from API
@@ -50,6 +83,7 @@ class AlbumsCreate extends React.Component {
     this.setState({ musics: data });
   }
 
+  // checks if music was selected or deselected by user (music is just an integer [id])
   checkMusics = (id) => {
     let musics = this.state.album.albumMusics;
     return musics.includes(id) ? musics.filter(m => m !== id) : [id, ...musics];
@@ -99,7 +133,7 @@ class AlbumsCreate extends React.Component {
     });
   }
 
-  createAlbum = async (event) => {
+  editAlbum = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
     event.preventDefault();
@@ -120,13 +154,15 @@ class AlbumsCreate extends React.Component {
       this.setState({ fetchErr: true, fetchMsg: "É obrigatório ter pelo menos uma música" });
       return;
     }
-    
+
     album.albumMusics = this.getAlbumMusics();
+
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+    formData.append("id", album.id);
     formData.append("title", album.title);
     formData.append("releaseYear", album.releaseYear);
-    
+
     album.albumMusics.forEach((music, i) => {
       formData.append(`albumMusics[${i}].Id`, music.id);
       formData.append(`albumMusics[${i}].Title`, music.title);
@@ -139,8 +175,8 @@ class AlbumsCreate extends React.Component {
     let redirect = false;
 
     // sends album to API through post request
-    await fetch("/api/albumsAPI/", {
-      method: "post",
+    await fetch(`/api/albumsAPI/${album.id}`, {
+      method: "put",
       body: formData,
     })
       .then(res => {
@@ -158,7 +194,7 @@ class AlbumsCreate extends React.Component {
       });
 
     if (redirect) {
-      this.props.navigate("/albums", {state: {success: true, msg: "Álbum criado com sucesso"}});
+      this.props.navigate("/albums", {state: {success: true, msg: "Álbum editado com sucesso"}});
     }
   }
 
@@ -174,8 +210,8 @@ class AlbumsCreate extends React.Component {
           <div className="flex flex-col justify-between gap-6">
             <div>
               <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-                <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar novo álbum</h2>
-                <form onSubmit={this.createAlbum}>
+                <h2 className="text-lg font-semibold text-gray-700 capitalize">Editar álbum</h2>
+                <form onSubmit={this.editAlbum}>
                   <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
                       <label className="text-gray-700">Título</label>
@@ -191,7 +227,7 @@ class AlbumsCreate extends React.Component {
                       <MusicsCheckBox musics={musics} handleAlbumMusics={e => this.handleAlbum("albumMusics", e.target.value)} albumMusics={album.albumMusics} />
                   </div>
                   <div className="flex justify-end mt-6">
-                    <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
+                    <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Guardar</button>
                   </div>
                 </form>
                 
@@ -208,8 +244,8 @@ class AlbumsCreate extends React.Component {
           <Navbar />
           <div>
             <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md">
-              <h2 className="text-lg font-semibold text-gray-700 capitalize">Criar novo álbum</h2>
-              <form onSubmit={this.createAlbum}>
+              <h2 className="text-lg font-semibold text-gray-700 capitalize">Editar álbum</h2>
+              <form onSubmit={this.editAlbum}>
                 <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                   <div>
                     <label className="text-gray-700">Título</label>
@@ -225,7 +261,7 @@ class AlbumsCreate extends React.Component {
                     <MusicsCheckBox musics={musics} handleAlbumMusics={e => this.handleAlbum("albumMusics", e.target.value)} albumMusics={album.albumMusics} />
                 </div>
                 <div className="flex justify-end mt-6">
-                  <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Criar</button>
+                  <button className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Guardar</button>
                 </div>
               </form>
               
@@ -239,4 +275,4 @@ class AlbumsCreate extends React.Component {
 
 }
 
-export default withHooks(AlbumsCreate);
+export default withHooks(AlbumsEdit);
