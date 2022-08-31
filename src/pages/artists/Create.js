@@ -14,7 +14,11 @@ const withHooks = (Component) => {
   return props => <Component {...props} navigate={useNavigate()} />;
 }
 
+/**
+ * Component that represents the page to create one artist
+ */
 class ArtistsCreate extends React.Component {
+  // component's initial state
   state = {
     artist: {
         "name": "",
@@ -62,6 +66,7 @@ class ArtistsCreate extends React.Component {
     }
   }
 
+  // requests to the API to create one artist
   createArtist = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
@@ -72,16 +77,19 @@ class ArtistsCreate extends React.Component {
     // regexp by w3resource (https://www.w3resource.com/javascript/form/email-validation.php)
     const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+    // validates name
     if (artist.name.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Nome inválido" });
       return;
     }
 
+    // validates email
     if (!emailRegexp.test(artist.email)) {
       this.setState({ fetchErr: true, fetchMsg: "Email inválido" });
       return;
     }
     
+    // validates password
     if (artist.password.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Palavra-chave inválida" });
       return;
@@ -89,6 +97,8 @@ class ArtistsCreate extends React.Component {
 
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+
+    // appends album data to the formData
     formData.append("name", artist.name);
     formData.append("email", artist.email);
     formData.append("password", artist.password);
@@ -116,14 +126,20 @@ class ArtistsCreate extends React.Component {
         this.setState({ fetchErr: true, fetchMsg: await err });
       });
     
+    // redirects to index page if redirect === true
     if (redirect) {
       this.props.navigate("/artists", {state: {success: true, msg: "Artista criado com sucesso"}});
     }
   }
 
+  // method to render the component
   render() {
+    // deconstructs this.state into multiple constant variables
     const { artist, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {

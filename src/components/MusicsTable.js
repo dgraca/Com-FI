@@ -36,6 +36,7 @@ const TBody = (props) => {
       </tbody>
     )
   }
+
   if (rows.length === 0) {
     return (
       <tbody>
@@ -47,6 +48,7 @@ const TBody = (props) => {
       </tbody>
     );
   }
+
   rows = rows.map(music => {
     return (
       <tr key={music.id}>
@@ -80,7 +82,9 @@ const TBody = (props) => {
 
 class MusicsTable extends React.Component {  
   render() {
-    const { musicsDataIN, loading } = this.props;   
+    // deconstructs this.state into multiple constant variables
+    const { musicsDataIN, loading } = this.props;
+    
     return (
       // code of component : https://tailwindcomponents.com/components/tables
       // *adjusted to fit our needs

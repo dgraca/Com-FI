@@ -16,8 +16,11 @@ const withHooks = (Component) => {
   return props => <Component {...props} location={useLocation()} />;
 }
 
-// Artists component
+/**
+ * Component that represents the page to list all artists
+ */
 class Artists extends React.Component {
+  // component's initial state
   state = {
     artists: [],
     loading: true,
@@ -28,10 +31,13 @@ class Artists extends React.Component {
   // binds "this" into the deleteArtist function
   deleteArtist = this.deleteArtist.bind(this);
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     await this.getArtists();
   }
 
+  // fetches all artists from API
   async getArtists() {
     let data = await fetch("api/artistsAPI/")
       .then(res => {
@@ -46,6 +52,7 @@ class Artists extends React.Component {
     this.setState({ artists: data, loading: false });
   }
 
+  // requests to the API to delete one artist
   deleteArtist(id) {
     // artist about to be deleted
     const artist = this.state.artists.find(artist => artist.id == id);
@@ -82,10 +89,21 @@ class Artists extends React.Component {
     });
   }
 
-  render() {    
+  // method to render the component
+  render() {
+    // deconstructs this.state into multiple constant variables
     const { artists, loading, fetchErr, fetchMsg } = this.state;
+    
+    // navigateState receives "props" from the useLocation() hook,
+    // that was passed into the ES6 class from the withHooks() function
+    // at the top of the file
     const navigateState = this.props.location.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
+    // because react JSX only returns one element, we surrounded the code with <> and </>
+    // this is the shortest syntax of a React.Fragment
     if (fetchErr) {
       return (
         <>

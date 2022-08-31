@@ -14,7 +14,11 @@ const withHooks = (Component) => {
   return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
 }
 
+/**
+ * Component that represents the page to edit one album
+ */
 class ArtistsEdit extends React.Component {
+  // component's initial state
   state = {
     artist: {
       "name": "",
@@ -25,6 +29,8 @@ class ArtistsEdit extends React.Component {
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     // gets id passed as param via <Link>
     const id = this.props.params.id;
@@ -79,6 +85,7 @@ class ArtistsEdit extends React.Component {
     }
   }
 
+  // requests to the API to edit one artist
   editArtist = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
@@ -89,11 +96,13 @@ class ArtistsEdit extends React.Component {
     // regexp by w3resource (https://www.w3resource.com/javascript/form/email-validation.php)
     const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
+    // validate name
     if (artist.name.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Nome inválido" });
       return;
     }
 
+    // validate email
     if (!emailRegexp.test(artist.email)) {
       this.setState({ fetchErr: true, fetchMsg: "Email inválido" });
       return;
@@ -101,6 +110,8 @@ class ArtistsEdit extends React.Component {
 
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+
+    // appends album data to the formData
     formData.append("id", artist.id);
     formData.append("name", artist.name);
     formData.append("email", artist.email);
@@ -129,14 +140,19 @@ class ArtistsEdit extends React.Component {
         this.setState({ fetchErr: true, fetchMsg: await err });
       });
 
+    // redirects to index page if redirect === true
     if (redirect) {
       this.props.navigate("/artists", {state: {success: true, msg: "Artista editado com sucesso"}});
     }
   }
 
   render() {
+    // deconstructs this.state into multiple constant variables
     const { artist, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {

@@ -15,7 +15,11 @@ const withHooks = (Component) => {
   return props => <Component {...props} navigate={useNavigate()} />;
 }
 
+/**
+ * Component that represents the page to create a music
+ */
 class MusicsCreate extends React.Component {
+  // component's initial state
   state = {
     music: {
         "title": "",
@@ -27,6 +31,8 @@ class MusicsCreate extends React.Component {
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     await this.getGenres();
   }
@@ -87,6 +93,7 @@ class MusicsCreate extends React.Component {
     }
   }
 
+  // requests to the API to create one music
   createMusic = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
@@ -94,16 +101,19 @@ class MusicsCreate extends React.Component {
 
     const music = this.state.music;
 
+    // validates title
     if (music.title.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Título inválido" });
       return;
     }
 
+    // validates release year
     if (music.releaseYear === "") {
       this.setState({ fetchErr: true, fetchMsg: "Ano de lançamento inválido" });
       return;
     }
     
+    // validates genre foreign key
     if (music.genreFK == 0) {
       this.setState({ fetchErr: true, fetchMsg: "Género inválido" });
       return;
@@ -111,6 +121,8 @@ class MusicsCreate extends React.Component {
 
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+
+    // append data to formData
     formData.append("title", music.title);
     formData.append("releaseYear", music.releaseYear);
     formData.append("genreFK", music.genre);
@@ -138,14 +150,20 @@ class MusicsCreate extends React.Component {
         this.setState({ fetchErr: true, fetchMsg: await err });
       });
 
+    // redirects to index page if redirect === true
     if (redirect) {
       this.props.navigate("/musics", {state: {success: true, msg: "Música criada com sucesso"}});
     }
   }
 
+  // method to render the component
   render() {
+    // deconstructs this.state into multiple constant variables
     const { music, genres, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {

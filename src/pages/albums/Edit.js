@@ -15,7 +15,12 @@ const withHooks = (Component) => {
   return props => <Component {...props} params={useParams()} navigate={useNavigate()} />;
 }
 
+/**
+ * Component that represents the the albums edit page.
+ * That means, this component is the page that allows to edit one album
+ */
 class AlbumsEdit extends React.Component {
+  // component's initial state
   state = {
     album: {
       "title": "",
@@ -27,6 +32,8 @@ class AlbumsEdit extends React.Component {
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     // gets id passed as param via <Link>
     const id = this.props.params.id;
@@ -126,6 +133,7 @@ class AlbumsEdit extends React.Component {
     }
   }
 
+  // request from API all musics that belongs to an album
   getAlbumMusics = () => {
     const albumMusics = this.state.album.albumMusics;
     return albumMusics.map(albumMusic => {
@@ -133,6 +141,7 @@ class AlbumsEdit extends React.Component {
     });
   }
 
+  // requests to the API to edit one album
   editAlbum = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
@@ -140,29 +149,34 @@ class AlbumsEdit extends React.Component {
 
     const album = this.state.album;
 
+    // validates title
     if (album.title.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Título inválido" });
       return;
     }
 
+    // validates release year
     if (album.releaseYear === "") {
       this.setState({ fetchErr: true, fetchMsg: "Ano de lançamento inválido" });
       return;
     }    
 
+    // validates album musics list
     if (album.albumMusics.length === 0) {
       this.setState({ fetchErr: true, fetchMsg: "É obrigatório ter pelo menos uma música" });
       return;
     }
 
+    // requests album musics
     album.albumMusics = this.getAlbumMusics();
 
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+
+    // appends album data to the formData
     formData.append("id", album.id);
     formData.append("title", album.title);
     formData.append("releaseYear", album.releaseYear);
-
     album.albumMusics.forEach((music, i) => {
       formData.append(`albumMusics[${i}].Id`, music.id);
       formData.append(`albumMusics[${i}].Title`, music.title);
@@ -198,9 +212,14 @@ class AlbumsEdit extends React.Component {
     }
   }
 
+  // method to render the component
   render() {
+    // deconstructs this.state into multiple constant variables
     const { album, musics, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {

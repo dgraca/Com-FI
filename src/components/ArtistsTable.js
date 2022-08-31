@@ -14,6 +14,7 @@ const parseData = (date) => {
     return finalDate + ' ' + finalTime;
 }
 
+// Represents the header of the table
 const THead = () => {
   return (
     <thead>
@@ -33,10 +34,16 @@ const THead = () => {
   );
 }
 
+// Represents the component of the table's bo
 const TBody = (props) => {
+  // rows represent the artists passed via props
   let rows = props.dataIN;
+  // loading status passed via props
   const loading = props.loading;
+  // represents the function to delete one artist passed via props
   const deleteArtist = props.deleteArtist;
+
+  // if component still loading (still fetching data) it displays spinner
   if (loading) {
     return(
       <tbody>
@@ -50,6 +57,8 @@ const TBody = (props) => {
       </tbody>
     )
   }
+
+  // if there is no data to display, displays this default message
   if (rows.length === 0) {
     return (
       <tbody>
@@ -66,6 +75,7 @@ const TBody = (props) => {
     );
   }
 
+  // there is data to display, so it populates the table with the data
   rows = rows.map(artist => {
     return (
       <tr key={artist.id}>
@@ -106,9 +116,15 @@ const TBody = (props) => {
     );
   });
 
+  // returns the body of the table populated (with data, with default message or with spinner)
   return <tbody>{rows}</tbody>;
 };
 
+
+/**
+ * Component that represents the the artists table.
+ * That means, there will be a table with all artists
+ */
 class ArtistsTable extends React.Component {
   render() {
     const { artistsDataIN, deleteArtist, loading } = this.props;

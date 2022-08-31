@@ -1,7 +1,10 @@
 import React from "react";
 
+// Component that serves the purpose to display one message to the user
+// that message can be of multiple types and have different messages 
 const Popup = (props) => {
-  let { type, msg } = props;
+  // deconstructs props into const variables
+  const { type, msg } = props;
 
   /*
     (all) components by MerakiUI (https://merakiui.com)
@@ -9,6 +12,7 @@ const Popup = (props) => {
     *adjusted to fit our needs
   */
 
+  // if the popup is of type success
   if (type === "success") {
     return (
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">
@@ -30,6 +34,7 @@ const Popup = (props) => {
         </div>
       </div>
     );
+  // if the popup is of type warning
   } else if (type === "warning") {
     return (
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">
@@ -51,6 +56,7 @@ const Popup = (props) => {
         </div>
       </div>
     );
+  // if the popup is of type error
   } else if (type === "error") {
     return (
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">
@@ -72,6 +78,7 @@ const Popup = (props) => {
         </div>
       </div>
     );
+  // the popup is of type information
   } else {
     return (
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md">

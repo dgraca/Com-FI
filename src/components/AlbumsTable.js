@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
 
+// Represents the header of the table
 const THead = () => {
   return (
     <thead>
@@ -21,10 +22,17 @@ const THead = () => {
   );
 }
 
+// Represents the component of the table's body
 const TBody = (props) => {
+  // rows represent the albums passed via props
   let rows = props.dataIN;
+  // loading status passed via props
   const loading = props.loading;
-  const deleteAlbum = props.deleteAlbum;  
+  // represents the function to delete one album passed via props
+  const deleteAlbum = props.deleteAlbum;
+
+  // if component still loading (still fetching data)
+  // displays spinner
   if (loading) {
     return(
       <tbody>
@@ -38,6 +46,8 @@ const TBody = (props) => {
       </tbody>
     )
   }
+
+  // if there is no data to display, displays this default message
   if (rows.length === 0) {
     return (
       <tbody>
@@ -54,8 +64,7 @@ const TBody = (props) => {
     );
   }
   
-  
-
+  // there is data to display, so it populates the table with the data
   rows = rows.map(album => {
     return (
       
@@ -103,11 +112,17 @@ const TBody = (props) => {
     );
   });
 
+  // returns the body of the table populated (with data, with default message or with spinner)
   return <tbody>{rows}</tbody>;
 };
 
+/**
+ * Component that represents the page that will display all albums
+ * That means, on the album index page, there will be a table with all the albums
+ */
 class AlbumsTable extends React.Component {
   render() {
+    // deconstructs this.state into multiple constant variables
     const { albumsDataIN, deleteAlbum, loading } = this.props;
 
     return (

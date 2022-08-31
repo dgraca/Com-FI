@@ -15,7 +15,11 @@ const withHooks = (Component) => {
   return props => <Component {...props} location={useLocation()} />;
 }
 
+/**
+ * Component that represents the page to list all musics
+ */
 class MusicsIndex extends React.Component {
+  // component's initial state
   state = {
     musics: [],
     loading: true,
@@ -23,10 +27,13 @@ class MusicsIndex extends React.Component {
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     await this.getMusics();
   }
 
+  // fetches all musics from API
   async getMusics() {
     let data = await fetch("api/musicsAPI/")
       .then(res => {
@@ -41,10 +48,19 @@ class MusicsIndex extends React.Component {
     this.setState({ musics: data, loading: false });
   }
 
+  // method to render the component
   render() {
+    // deconstructs this.state into multiple constant variables
     const { musics, loading, fetchErr, fetchMsg } = this.state;
+    
+    // navigateState receives "props" from the useLocation() hook,
+    // that was passed into the ES6 class from the withHooks() function
+    // at the top of the file
     const navigateState = this.props.location.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {

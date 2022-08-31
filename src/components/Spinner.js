@@ -1,5 +1,6 @@
 import React from "react";
 
+// Component that represents the spinner
 const Spinner = () => {
   return (
     /*

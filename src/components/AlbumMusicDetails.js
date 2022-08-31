@@ -27,8 +27,7 @@ const TBody = (props) => {
   // loading status passed via props
   const loading = props.loading;
   
-  // if component still loading (still fetching data)
-  // displays spinner
+  // if component still loading (still fetching data) it displays spinner
   if (loading) {
     return(
       <tbody>
@@ -99,7 +98,9 @@ const TBody = (props) => {
  */
 class AlbumMusicDetails extends React.Component {  
   render() {
-    const { musicsDataIN, loading } = this.props;   
+    // deconstructs this.state into multiple constant variables
+    const { musicsDataIN, loading } = this.props;
+    
     return (
       // code of component : https://tailwindcomponents.com/components/tables
       // *adjusted to fit our needs   

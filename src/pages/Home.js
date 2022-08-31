@@ -2,10 +2,12 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-
-// Home component
+/**
+ * Component that represents the home page
+ */
 class Home extends React.Component {
-
+  
+  // method to render the component
   render() {
     return (
       <>

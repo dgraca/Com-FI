@@ -15,7 +15,12 @@ const withHooks = (Component) => {
   return props => <Component {...props} navigate={useNavigate()} />;
 }
 
+
+/**
+ * Component that represents the page to create one album
+ */
 class AlbumsCreate extends React.Component {
+  // component's initial state
   state = {
     album: {
         "title": "",
@@ -27,6 +32,8 @@ class AlbumsCreate extends React.Component {
     fetchMsg: "",
   }
 
+  // when the component is mounted, it calls this method.
+  // This method is one of many of the react Lifecycle
   async componentDidMount() {
     await this.getMusics();
   }
@@ -50,6 +57,7 @@ class AlbumsCreate extends React.Component {
     this.setState({ musics: data });
   }
 
+  // checks if one music was selected or deselected by the user
   checkMusics = (id) => {
     let musics = this.state.album.albumMusics;
     return musics.includes(id) ? musics.filter(m => m !== id) : [id, ...musics];
@@ -92,6 +100,7 @@ class AlbumsCreate extends React.Component {
     }
   }
 
+  // request from API all musics that belongs to an album
   getAlbumMusics = () => {
     const albumMusics = this.state.album.albumMusics;
     return albumMusics.map(albumMusic => {
@@ -99,6 +108,7 @@ class AlbumsCreate extends React.Component {
     });
   }
 
+  // requests to the API to create one album
   createAlbum = async (event) => {
     // cancels the event (if it's cancellable) without stopping its propagation
     // this means that the request will be done, but the event will be stopped
@@ -106,27 +116,33 @@ class AlbumsCreate extends React.Component {
 
     const album = this.state.album;
 
+    // validates title
     if (album.title.trim() === "") {
       this.setState({ fetchErr: true, fetchMsg: "Título inválido" });
       return;
     }
 
+    // validates release year
     if (album.releaseYear === "") {
       this.setState({ fetchErr: true, fetchMsg: "Ano de lançamento inválido" });
       return;
     }    
 
+    // validates album musics list
     if (album.albumMusics.length === 0) {
       this.setState({ fetchErr: true, fetchMsg: "É obrigatório ter pelo menos uma música" });
       return;
     }
     
+    // requests album musics
     album.albumMusics = this.getAlbumMusics();
+    
     // creates an object of key/value pairs to be sent to an API
     let formData = new FormData();
+
+    // appends album data to the formData
     formData.append("title", album.title);
     formData.append("releaseYear", album.releaseYear);
-    
     album.albumMusics.forEach((music, i) => {
       formData.append(`albumMusics[${i}].Id`, music.id);
       formData.append(`albumMusics[${i}].Title`, music.title);
@@ -157,14 +173,20 @@ class AlbumsCreate extends React.Component {
         this.setState({ fetchErr: true, fetchMsg: await err });
       });
 
+    // redirects to index page if redirect === true
     if (redirect) {
       this.props.navigate("/albums", {state: {success: true, msg: "Álbum criado com sucesso"}});
     }
   }
 
+  // method to render the component
   render() {
+    // deconstructs this.state into multiple constant variables
     const { album, musics, fetchErr, fetchMsg } = this.state;
 
+    // conditional rendering. This means we can render different components/structure
+    // depending on the situation.
+    // there's one component that is written like so: <></>.
     // because react JSX only returns one element, we surrounded the code with <> and </>
     // this is the shortest syntax of a React.Fragment
     if (fetchErr) {
