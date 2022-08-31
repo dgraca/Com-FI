@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const THead = () => {
   return (
@@ -25,12 +26,8 @@ const TBody = (props) => {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="3">
-            <div>
-              <p className="text-gray-900 whitespace-no-wrap">
-                Sem dados a apresentar
-              </p>
-            </div>
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" align="center" colSpan="3">
+            <Spinner/>            
           </td>
         </tr>
       </tbody>
