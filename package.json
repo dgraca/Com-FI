@@ -13,7 +13,7 @@
     "sweetalert2": "^11.4.29",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "https://com-fi-mvc-20948-20964.azurewebsites.net",
+  "proxy": "https://com-fi-mvc-20948-20964.azurewebsites.net/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
