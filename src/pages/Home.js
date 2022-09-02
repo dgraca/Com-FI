@@ -36,7 +36,8 @@ class Home extends React.Component {
             </div>
           </div>
           <div className="text-center mt-6">
-            <h2 className="font-bold tracking-tight text-lg">Licenciatura em Engenharia Informática</h2>
+            <a href="http://www.ipt.pt" className="hover:cursor-pointer hover:text-gray-700"><h2 className="font-semibold tracking-widest text">Instituto Politécnico de Tomar</h2></a>
+            <h3 className="font-bold tracking-tight text-lg">Licenciatura em Engenharia Informática</h3>
             <h3 className="tracking-normal text">Desenvolvimento Web</h3>
             <p>2021/2022</p>
           </div>
