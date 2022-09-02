@@ -40,7 +40,7 @@ class ArtistsEdit extends React.Component {
 
   // get artist information by id
   getArtist = async (id) => {
-    let data = await fetch(`/api/artistsAPI/${id}`)
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/artistsAPI/${id}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -122,7 +122,7 @@ class ArtistsEdit extends React.Component {
     let redirect = false;
 
     // sends album to API through post request
-    await fetch(`/api/artistsAPI/${artist.id}`, {
+    await fetch(`${process.env.REACT_APP_WEB_API}/artistsAPI/${artist.id}`, {
       method: "put",
       body: formData,
     })

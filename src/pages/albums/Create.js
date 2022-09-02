@@ -41,7 +41,7 @@ class AlbumsCreate extends React.Component {
   // request the list of musics from API
   // and sets that list to the state's musics array
   getMusics = async () => {
-    let data = await fetch("/api/musicsAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/musicsAPI/`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -155,7 +155,7 @@ class AlbumsCreate extends React.Component {
     let redirect = false;
 
     // sends album to API through post request
-    await fetch("/api/albumsAPI/", {
+    await fetch(`${process.env.REACT_APP_WEB_API}/albumsAPI/`, {
       method: "post",
       body: formData,
     })

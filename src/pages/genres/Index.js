@@ -24,7 +24,7 @@ class Genres extends React.Component {
 
   // fetches all genres from API
   async getGenres() {
-    let data = await fetch("api/genresAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/genresAPI/`)
       .then(res => {
         return res.json();
       })

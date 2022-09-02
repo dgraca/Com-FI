@@ -108,7 +108,7 @@ class ArtistsCreate extends React.Component {
     let redirect = false;
 
     // sends music to API through post request
-    await fetch("/api/artistsAPI/", {
+    await fetch(`${process.env.REACT_APP_WEB_API}/artistsAPI/`, {
       method: "post",
       body: formData,
     })

@@ -39,7 +39,7 @@ class Artists extends React.Component {
 
   // fetches all artists from API
   async getArtists() {
-    let data = await fetch("api/artistsAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/artistsAPI/`)
       .then(res => {
         return res.json();
       })
@@ -73,7 +73,7 @@ class Artists extends React.Component {
       if (res.isConfirmed) {
         let formData = new FormData();
         formData.append("id", id);
-        await fetch(`api/artistsAPI/${id}`, {
+        await fetch(`${process.env.REACT_APP_WEB_API}/artistsAPI/${id}`, {
           method: "delete", 
           body: formData,     
         }).then(async res => {

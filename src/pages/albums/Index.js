@@ -40,7 +40,7 @@ class AlbumsIndex extends React.Component {
 
   // fetches all albums from the API
   async getAlbums() {
-    let data = await fetch("api/albumsAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/albumsAPI/`)
       .then(res => {
         return res.json();
       })
@@ -81,7 +81,7 @@ class AlbumsIndex extends React.Component {
         // the request itself, with the method and body set
         // if the request was successful, executes .then() callback
         // if it wasn't, executes the .catch() callback
-        await fetch(`api/albumsApi/${id}`, {
+        await fetch(`${process.env.REACT_APP_WEB_API}/albumsApi/${id}`, {
           method: "delete", 
           body: formData,     
         }).then(async res => {

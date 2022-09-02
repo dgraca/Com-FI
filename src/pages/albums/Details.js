@@ -46,7 +46,7 @@ class AlbumsDetails extends React.Component {
     // the request itself
     // if the request was successful, executes the .then() callback
     // if it wasn't, executes the .catch() callback
-    let data = await fetch(`/api/albumsAPI/${id}`)
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/albumsAPI/${id}`)
       .then(res => {
         if (res.ok) {
           return res.json();

@@ -49,7 +49,7 @@ class AlbumsEdit extends React.Component {
 
   // get album information by id
   getAlbum = async (id) => {
-    let data = await fetch(`/api/albumsAPI/${id}`)
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/albumsAPI/${id}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -74,7 +74,7 @@ class AlbumsEdit extends React.Component {
   // request the list of musics from API
   // and sets that list to the state's musics array
   getMusics = async () => {
-    let data = await fetch("/api/musicsAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/musicsAPI/`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -189,7 +189,7 @@ class AlbumsEdit extends React.Component {
     let redirect = false;
 
     // sends album to API through post request
-    await fetch(`/api/albumsAPI/${album.id}`, {
+    await fetch(`${process.env.REACT_APP_WEB_API}/albumsAPI/${album.id}`, {
       method: "put",
       body: formData,
     })

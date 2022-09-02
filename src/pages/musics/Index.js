@@ -35,7 +35,7 @@ class MusicsIndex extends React.Component {
 
   // fetches all musics from API
   async getMusics() {
-    let data = await fetch("api/musicsAPI/")
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/musicsAPI/`)
       .then(res => {
         return res.json();
       })
