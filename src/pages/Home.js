@@ -21,7 +21,7 @@ class Home extends React.Component {
           <h1 className="font-bold tracking-wider text-2xl">Desenvolvedores</h1>
           <div className="flex flex-row items-center justify-between mt-12 gap-24">
             <div className="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
-                <img className="object-cover w-full h-56" src="./daniel.JPG" alt="Fotografia do desenvolvedor: Daniel Graça" />
+                <img className="object-cover w-full h-56" src="./daniel.jpg" alt="Fotografia do desenvolvedor: Daniel Graça" />
                 <div className="py-5 text-center">
                     <p className="block text-2xl font-bold text-gray-800 ">Daniel Graça</p>
                     <span className="text-sm text-gray-700">Aluno n.º 20948</span>
