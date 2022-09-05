@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
 
+// Represents the header of the table
 const THead = () => {
   return (
     <thead>
@@ -20,9 +21,14 @@ const THead = () => {
   );
 }
 
+// Represents the component of the table's body
 const TBody = (props) => {
+  // rows represent the artists passed via props
   let rows = props.dataIN;
+  // loading status passed via props
   const loading = props.loading;
+
+  // if component still loading (still fetching data) it displays spinner
   if (loading) {
     return(
       <tbody>
@@ -37,18 +43,20 @@ const TBody = (props) => {
     )
   }
 
+  // if there is no data to display, displays this default message
   if (rows.length === 0) {
     return (
       <tbody>
         <tr>
           <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" align="center" colSpan="3">
-            <Spinner/>            
+            Sem dados a apresentar
           </td>
         </tr>
       </tbody>
     );
   }
 
+  // there is data to display, so it populates the table with the data
   rows = rows.map(music => {
     return (
       <tr key={music.id}>
@@ -77,9 +85,15 @@ const TBody = (props) => {
     );
   });
 
+  // returns the body of the table populated (with data, with default message or with spinner)
   return <tbody>{rows}</tbody>;
 };
 
+
+/**
+ * Component that represents the the musics table.
+ * That means, there will be a table with all musics
+ */
 class MusicsTable extends React.Component {  
   render() {
     // deconstructs this.state into multiple constant variables

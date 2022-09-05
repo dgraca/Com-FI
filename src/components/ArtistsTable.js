@@ -34,7 +34,7 @@ const THead = () => {
   );
 }
 
-// Represents the component of the table's bo
+// Represents the component of the table's body
 const TBody = (props) => {
   // rows represent the artists passed via props
   let rows = props.dataIN;
@@ -127,6 +127,7 @@ const TBody = (props) => {
  */
 class ArtistsTable extends React.Component {
   render() {
+    // deconstructs this.state into multiple constant variables
     const { artistsDataIN, deleteArtist, loading } = this.props;
 
     return (
