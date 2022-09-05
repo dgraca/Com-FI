@@ -70,7 +70,7 @@ class MusicsIndex extends React.Component {
         <>
           <Navbar />
           <div>
-            <MusicsTable musicsDataIN={musics} loading={loading}/>
+            <MusicsTable musicsDataIN={musics} loading={loading} />
             <Popup type="error" msg={fetchMsg} />
           </div>
           <Footer />
@@ -82,9 +82,9 @@ class MusicsIndex extends React.Component {
           <Navbar />
           <div>
             <div className="mt-8">
-              <Popup type="success" msg={navigateState.msg} loading={loading}/>
+              <Popup type="success" msg={navigateState.msg} />
             </div>
-            <MusicsTable musicsDataIN={musics} />
+            <MusicsTable musicsDataIN={musics} loading={loading} />
           </div>
           <Footer />
         </>
