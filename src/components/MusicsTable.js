@@ -48,7 +48,7 @@ const TBody = (props) => {
     return (
       <tbody>
         <tr>
-          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" align="center" colSpan="3">
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5" colSpan="3">
             Sem dados a apresentar
           </td>
         </tr>
