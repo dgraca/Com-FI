@@ -40,7 +40,7 @@ class MusicsCreate extends React.Component {
   // request the list of genres from API
   // and sets that list to the state's genres array
   async getGenres() {
-    let data = await fetch(`{process.env.REACT_APP_WEB_API}/genresAPI/`)
+    let data = await fetch(`${process.env.REACT_APP_WEB_API}/genresAPI/`)
       .then(res => {
         if (res.ok) {
           return res.json();
